@@ -9,13 +9,12 @@ namespace SnipeSharp.Attributes
     [AttributeUsage(AttributeTargets.Property)]
     public class OptionalRequestHeader : Attribute
     {
-        private string _headerName;
-        public string HeaderName { get { return _headerName; } }
-
         public OptionalRequestHeader(string headerName)
         {
-            _headerName = headerName;
+            this.HeaderName = headerName;
         }
+
+        public string HeaderName { get; }
     }
 }
 

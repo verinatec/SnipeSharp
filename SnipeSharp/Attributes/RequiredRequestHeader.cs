@@ -9,12 +9,11 @@ namespace SnipeSharp.Attributes
     [AttributeUsage(AttributeTargets.Property)]
     public class RequiredRequestHeader : Attribute
     {
-        private string _headerName;
-        public string HeaderName { get { return _headerName; } }
-
         public RequiredRequestHeader(string headerName)
         {
-            _headerName = headerName;
+            this.HeaderName = headerName;
         }
+        
+        public string HeaderName { get; }
     }
 }

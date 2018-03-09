@@ -12,13 +12,12 @@ namespace SnipeSharp.Attributes
     [AttributeUsage(AttributeTargets.Property)]
     public class FilterParamName : Attribute
     {
-        private string _paramName;
-        public string ParamName { get { return _paramName; } }
-
         public FilterParamName(string paramName)
         {
-            _paramName = paramName;
+            this.ParamName = paramName;
         }
+        
+        public string ParamName { get; }
     }
 }
 
