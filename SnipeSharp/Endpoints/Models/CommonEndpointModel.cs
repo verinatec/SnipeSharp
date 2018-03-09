@@ -7,12 +7,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-/// <summary>
-/// Represents the the base of all objects we get back the API.  This is the building block for all more 
-/// specific return objects. 
-/// </summary>
 namespace SnipeSharp.Endpoints.Models
 {
+    /// <summary>
+    /// Represents the the base of all objects we get back the API.  This is the building block for all more 
+    /// specific return objects. 
+    /// </summary>
     public class CommonEndpointModel : ICommonEndpointModel
     {
         [JsonProperty("id")]
