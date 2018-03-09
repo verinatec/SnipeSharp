@@ -4,10 +4,10 @@
     <id>$id$</id>
     <version>$version$</version>
     <title>$title$</title>
-    <authors>Matthew Carey</authors>
+    <authors>Matthew Carey, Christian Nitschkowski</authors>
     <owners>Matthew Carey</owners>
     <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
-    <projectUrl>https://github.com/barrycarey/SnipeSharp</projectUrl>
+    <projectUrl>https://github.com/cnitschkowski/SnipeSharp</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <summary>A .Net API wrapper for Snipe IT that allows you to manage the full Snipe IT API within a .NET project. </summary>
