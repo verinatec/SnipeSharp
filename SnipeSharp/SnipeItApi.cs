@@ -10,16 +10,17 @@ namespace SnipeSharp
 {
     public class SnipeItApi
     {
-        private static readonly Dictionary<Type, string> _typeUrlMappings = new Dictionary<Type, string>
+        private static readonly Dictionary<Type, string> TypeUrlMappings = new Dictionary<Type, string>
         {
             {typeof(Asset), "assets"},
+            {typeof(Category), "categories"},
             {typeof(Company), "companies"},
             {typeof(Location), "locations"},
             {typeof(Accessory), "accessories"},
             {typeof(Consumable), "consumables"},
             {typeof(Component), "components"},
             {typeof(User), "users"},
-            {typeof(StatusLabel), "statusLabels"},
+            {typeof(StatusLabel), "statuslabels"},
             {typeof(Model), "models"},
             {typeof(License), "licenses"},
             {typeof(Manufacturer), "manufacturers"},
@@ -80,7 +81,7 @@ namespace SnipeSharp
         {
             var type = typeof(T);
 
-            foreach (var pair in _typeUrlMappings)
+            foreach (var pair in TypeUrlMappings)
             {
                 if (type.IsAssignableFrom(pair.Key))
                 {
