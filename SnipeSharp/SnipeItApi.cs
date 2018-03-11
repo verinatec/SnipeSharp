@@ -12,7 +12,7 @@ namespace SnipeSharp
     {
         private static readonly Dictionary<Type, string> TypeUrlMappings = new Dictionary<Type, string>
         {
-            {typeof(Asset), "assets"},
+            {typeof(Asset), "hardware"},
             {typeof(Category), "categories"},
             {typeof(Company), "companies"},
             {typeof(Location), "locations"},
