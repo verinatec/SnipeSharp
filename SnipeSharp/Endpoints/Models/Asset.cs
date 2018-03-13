@@ -5,14 +5,12 @@ using SnipeSharp.Endpoints.EndpointHelpers;
 using SnipeSharp.JsonConverters;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace SnipeSharp.Endpoints.Models
 {
     // TODO: Make constructor that forces required fields
     public class Asset : CommonEndpointModel
     {
-
         [JsonProperty("name")]
         [OptionalRequestHeader("name")]
         public new string Name { get; set; }
@@ -81,8 +79,7 @@ namespace SnipeSharp.Endpoints.Models
             get { return _warrantyMonths; }
             set
             {
-
-                _warrantyMonths = (value != null) ? value.Replace(" months", "") : null;
+                this._warrantyMonths = value?.Replace(" months", "");
             }
         }
 
@@ -132,41 +129,52 @@ namespace SnipeSharp.Endpoints.Models
             // On a checkout request we only need to return the headers from the checkout request itself, not he asset
             if (CheckoutRequest != null)
             {
-                Dictionary<string, string> values = new Dictionary<string, string>();
-
-                foreach (PropertyInfo prop in CheckoutRequest.GetType().GetProperties())
-                {
-                    var propValue = prop.GetValue(CheckoutRequest)?.ToString();
-
-                    if (propValue == null) continue;
-
-                    var result = prop.GetCustomAttributesData()
-                                     .Where(p => p.Constructor.DeclaringType.Name == "OptionalRequestHeader")
-                                     .FirstOrDefault();
-
-                    if (result == null) continue;
-
-                    string keyname = result.ConstructorArguments.First().ToString().Replace("\"", "").ToLower();
-
-                    values.Add(keyname, propValue);
-
-                }
-
-                return values;
+                return BuildCheckoutQueryString();
             }            
 
-            var baseValues = base.BuildQueryString();
+            var baseValues = this.BuildQueryStringInternal("asset_tag");
 
-            if (CustomFields != null)
+            var customFields = this.CustomFields;
+            if (customFields == null)
             {
-                foreach (KeyValuePair<string, string> kvp in CustomFields)
-                {
-                    baseValues.Add(kvp.Key, kvp.Value);
-                }
+                return baseValues;
+            }
+            
+            foreach (var kvp in customFields)
+            {
+                baseValues.Add(kvp.Key, kvp.Value);
             }
 
             return baseValues;
         }
 
+        private Dictionary<string, string> BuildCheckoutQueryString()
+        {
+            var values = new Dictionary<string, string>();
+
+            foreach (var prop in CheckoutRequest.GetType().GetProperties())
+            {
+                var propValue = prop.GetValue(CheckoutRequest)?.ToString();
+
+                if (propValue == null)
+                {
+                    continue;
+                }
+
+                var result = prop.GetCustomAttributesData()
+                    .FirstOrDefault(p => p.Constructor.DeclaringType?.Name == "OptionalRequestHeader");
+
+                if (result == null)
+                {
+                    continue;
+                }
+
+                string keyname = result.ConstructorArguments.First().ToString().Replace("\"", "").ToLower();
+
+                values.Add(keyname, propValue);
+            }
+
+            return values;
+        }
     }
 }

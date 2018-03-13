@@ -7,7 +7,6 @@ namespace SnipeSharp.Endpoints.EndpointHelpers
 {
     public class AssetCheckoutRequest
     {
-
         [OptionalRequestHeader("checkout_to_type")]
         public string CheckoutToType { get; set; }
 
@@ -23,15 +22,15 @@ namespace SnipeSharp.Endpoints.EndpointHelpers
         [OptionalRequestHeader("note")]
         public string Note { get; set; }
 
+        // TODO: Make this a date object
         [OptionalRequestHeader("expected_checkin")]
-        public string ExpectedCheckin { get; set; } // TODO: Make this a date object
+        public string ExpectedCheckin { get; set; }
 
+        // TODO: Make this a date object
         [OptionalRequestHeader("checkout_at")]
-        public string CheckoutAt { get; set; }  // TODO: Make this a date object
+        public string CheckoutAt { get; set; }
 
         [OptionalRequestHeader("name")]
         public string Name { get; set; }
-
-
     }
 }

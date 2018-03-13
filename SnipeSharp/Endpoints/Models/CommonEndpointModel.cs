@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using SnipeSharp.Attributes;
 using SnipeSharp.Common;
 using SnipeSharp.Exceptions;
@@ -43,34 +44,43 @@ namespace SnipeSharp.Endpoints.Models
         /// <returns>Dictionary of header values</returns>
         public virtual Dictionary<string, string> BuildQueryString()
         {
-            Dictionary<string, string> values = new Dictionary<string, string>();
+            return this.BuildQueryStringInternal();
+        }
+
+        protected virtual Dictionary<string, string> BuildQueryStringInternal(params string[] notRequiredProperties)
+        {
+            var values = new Dictionary<string, string>();
 
             // TODO: Revisit this.  Look at loop in SearchFilter
-            foreach (PropertyInfo prop in this.GetType().GetProperties())
+            foreach (var prop in this.GetType().GetProperties())
             {
-                foreach (CustomAttributeData attData in prop.GetCustomAttributesData())
+                foreach (var attData in prop.GetCustomAttributesData())
                 {
+                    string typeName = attData.Constructor.DeclaringType?.Name;
 
-                    string typeName = attData.Constructor.DeclaringType.Name;
-
-                    if (typeName == "RequiredRequestHeader" || typeName == "OptionalRequestHeader")
+                    if (typeName != "RequiredRequestHeader" && typeName != "OptionalRequestHeader")
                     {
-                        var propValue = prop.GetValue(this)?.ToString();
-
-                        // Abort in missing required headers
-                        if (propValue == null && typeName == "RequiredRequestHeader")
-                        {
-                            throw new RequiredValueIsNullException(string.Format("{0} Cannot Be Null", prop.Name));
-                        }
-
-                        if (propValue != null)
-                        {
-
-                            string attName = attData.ConstructorArguments.First().ToString().Replace("\"", "");
-
-                            values.Add(attName, propValue);
-                        }
+                        continue;
                     }
+                    
+                    var propValue = prop.GetValue(this)?.ToString();
+
+                    // Abort in missing required headers (except the ones from the exception list).
+                    if (propValue == null
+                        && typeName == "RequiredRequestHeader"
+                        && !notRequiredProperties.Contains(prop.Name, StringComparer.InvariantCultureIgnoreCase))
+                    {
+                        throw new RequiredValueIsNullException($"Property {prop.Name} cannot be null.");
+                    }
+
+                    if (propValue == null)
+                    {
+                        continue;
+                    }
+                    
+                    string attName = attData.ConstructorArguments.First().ToString().Replace("\"", "");
+
+                    values.Add(attName, propValue);
                 }
             }
 
