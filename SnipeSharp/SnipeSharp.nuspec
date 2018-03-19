@@ -12,7 +12,7 @@
     <description>$description$</description>
     <summary>A .Net API wrapper for Snipe IT that allows you to manage the full Snipe IT API within a .NET project. </summary>
     <releaseNotes>Initial Release</releaseNotes>
-    <copyright>Copyright 2018, Christian Nitschkowski & Matthew Carey</copyright>
+    <copyright>Copyright 2018, Christian Nitschkowski &amp; Matthew Carey</copyright>
     <tags>SnipeIT Snipe IT</tags>
   </metadata>
   <files>
