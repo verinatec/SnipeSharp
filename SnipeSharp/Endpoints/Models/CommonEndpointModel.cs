@@ -1,6 +1,5 @@
 ﻿using System;
 using Newtonsoft.Json;
-using SnipeSharp.Attributes;
 using SnipeSharp.Common;
 using SnipeSharp.Exceptions;
 using SnipeSharp.JsonConverters;
@@ -20,7 +19,7 @@ namespace SnipeSharp.Endpoints.Models
         public long Id { get; set; }
 
         [JsonProperty("name")]
-        [RequiredRequestHeader("name")]
+        [RequestHeader("name", true)]
         public string Name { get; set; }
 
         [JsonProperty("created_at")]
@@ -35,16 +34,6 @@ namespace SnipeSharp.Endpoints.Models
         public override string ToString()
         {
             return Id.ToString();
-        }
-
-        /// <summary>
-        /// Loop through all properties of this model, looking for any tagged with our custom attributes that we need
-        /// to send as request headers
-        /// </summary>
-        /// <returns>Dictionary of header values</returns>
-        public virtual Dictionary<string, string> BuildQueryString()
-        {
-            return this.BuildQueryStringInternal();
         }
 
         protected virtual Dictionary<string, string> BuildQueryStringInternal(params string[] notRequiredProperties)

@@ -49,11 +49,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\FilterParamName.cs" />
-    <Compile Include="Attributes\OptionalRequestHeader.cs" />
-    <Compile Include="Attributes\RequiredRequestHeader.cs" />
     <Compile Include="Common\ApiSettings.cs" />
+    <Compile Include="Common\FilterParameterNameAttribute.cs" />
+    <Compile Include="Common\NameAttribute.cs" />
+    <Compile Include="Common\RequestHeaderAttribute.cs" />
     <Compile Include="Common\RequestManagerRestSharp.cs" />
+    <Compile Include="Endpoints\ExtendedManagers\SimpleEndpointManager.cs" />
+    <Compile Include="Endpoints\IQueryParameterBuilder.cs" />
     <Compile Include="Endpoints\Models\CommonEndpointModel.cs" />
     <Compile Include="Common\Date.cs" />
     <Compile Include="Common\IRequestManager.cs" />
@@ -68,6 +70,7 @@
     <Compile Include="Endpoints\Models\Department.cs" />
     <Compile Include="Endpoints\Models\FieldSet.cs" />
     <Compile Include="Endpoints\Models\Supplier.cs" />
+    <Compile Include="Endpoints\QueryParameterBuilder.cs" />
     <Compile Include="Endpoints\SearchFilters\ComponentsSearchFilter.cs" />
     <Compile Include="Endpoints\SearchFilters\ConsumablesSearchFilter.cs" />
     <Compile Include="Endpoints\SearchFilters\AccessoriesSearchFilter.cs" />

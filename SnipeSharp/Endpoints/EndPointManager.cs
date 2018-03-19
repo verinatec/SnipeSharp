@@ -14,9 +14,9 @@ namespace SnipeSharp.Endpoints
     public class EndpointManager<T> : IEndpointManager<T>
         where T : CommonEndpointModel 
     {
-        protected IRequestManager ReqManager { get; }
+        public IRequestManager ReqManager { get; }
 
-        protected string EndPoint { get; }
+        public string EndPoint { get; }
 
         public EndpointManager(IRequestManager reqManager, string endPoint)
         {
@@ -32,40 +32,7 @@ namespace SnipeSharp.Endpoints
         /// </returns>
         public IResponseCollection<T> GetAll()
         {
-            // Figure out how many rows the results will return so we can splitup requests
-            var count = FindAll(new SearchFilter() { Limit = 1 });
-
-            // If there are more than 1000 assets split up the requests to avoid timeouts
-            if (count.Total < 1000)
-            {
-                string response = ReqManager.Get(EndPoint);
-                var results = JsonConvert.DeserializeObject<ResponseCollection<T>>(response);
-
-                return results;
-            }
-            else
-            {
-                var finalResults = new ResponseCollection<T>()
-                {
-                    Total = count.Total
-                };
-
-                int offset = 0;
-
-                while (finalResults.Rows.Count < count.Total)
-                {
-                    var batch = FindAll(new SearchFilter
-                    {
-                        Limit = 1000,
-                        Offset = offset
-                    });
-
-                    finalResults.Rows.AddRange(batch.Rows);
-                    offset = finalResults.Rows.Count;
-                }
-
-                return finalResults;
-            }
+            return this.GetAllInternal();
         }
 
         /// <summary>
@@ -91,7 +58,7 @@ namespace SnipeSharp.Endpoints
             string response = ReqManager.Get(EndPoint, filter);
             var result = JsonConvert.DeserializeObject<ResponseCollection<T>>(response);
             
-            return (result.Rows != null) ? result.Rows[0] : default(T);
+            return result?.Rows?.FirstOrDefault();
         }
 
         /// <summary>
@@ -102,7 +69,7 @@ namespace SnipeSharp.Endpoints
         public T Get(int id)
         {
             // TODO: Find better way to deal with objects that are not found
-            string response = ReqManager.Get(string.Format("{0}/{1}", EndPoint, id.ToString()));
+            string response = ReqManager.Get($"{EndPoint}/{id}");
             var result = JsonConvert.DeserializeObject<T>(response); 
 
             return result;
@@ -113,13 +80,12 @@ namespace SnipeSharp.Endpoints
         /// </summary>
         /// <param name="name">The name of the object we want to find</param>
         /// <returns></returns>
-        /// 
         public T Get(string name)
         {
             name = name.ToLower();
             var everything = GetAll();
 
-            var result = everything.Rows.FirstOrDefault(i => i.Name.ToLower() == name);
+            var result = everything.Rows.FirstOrDefault(i => i?.Name?.ToLower() == name);
 
             return result;
         }
@@ -139,7 +105,7 @@ namespace SnipeSharp.Endpoints
 
         public IRequestResponse Update(T toUpdate)
         {
-            string response = ReqManager.Put(string.Format("{0}/{1}", EndPoint, toUpdate.Id), toUpdate);
+            string response = ReqManager.Put($"{EndPoint}/{toUpdate.Id}", toUpdate);
             var result = JsonConvert.DeserializeObject<RequestResponse>(response);
 
             return result;
@@ -147,7 +113,7 @@ namespace SnipeSharp.Endpoints
 
         public IRequestResponse Delete(int id)
         {
-            string response = ReqManager.Delete(string.Format("{0}/{1}", EndPoint, id.ToString()));
+            string response = ReqManager.Delete($"{EndPoint}/{id}");
             var result = JsonConvert.DeserializeObject<RequestResponse>(response);
             
             return result;
@@ -156,6 +122,42 @@ namespace SnipeSharp.Endpoints
         public IRequestResponse Delete(ICommonEndpointModel toDelete)
         {
             return Delete((int)toDelete.Id);
+        }
+        
+        protected virtual IResponseCollection<T> GetAllInternal()
+        {
+            // Figure out how many rows the results will return so we can splitup requests
+            var count = FindAll(new SearchFilter {Limit = 1});
+
+            // If there are more than 1000 assets split up the requests to avoid timeouts
+            if (count.Total < 1000)
+            {
+                string response = ReqManager.Get(EndPoint);
+                var results = JsonConvert.DeserializeObject<ResponseCollection<T>>(response);
+
+                return results;
+            }
+
+            var finalResults = new ResponseCollection<T>
+            {
+                Total = count.Total
+            };
+
+            int offset = 0;
+
+            while (finalResults.Rows.Count < count.Total)
+            {
+                var batch = FindAll(new SearchFilter
+                {
+                    Limit = 1000,
+                    Offset = offset
+                });
+
+                finalResults.Rows.AddRange(batch.Rows);
+                offset = finalResults.Rows.Count;
+            }
+
+            return finalResults;
         }
     }
 }

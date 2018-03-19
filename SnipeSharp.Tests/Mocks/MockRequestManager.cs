@@ -11,7 +11,7 @@ namespace SnipeSharp.Tests.Mocks
 {
     class MockRequestManager : IRequestManager
     {
-        public ApiSettings _apiSettings
+        public ApiSettings ApiSettings
         {
             get { throw new NotImplementedException(); }
             set { throw new NotImplementedException(); }

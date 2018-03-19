@@ -2,19 +2,22 @@
 using SnipeSharp.Endpoints.SearchFilters;
 using RestSharp;
 using RestSharp.Authenticators;
+using SnipeSharp.Endpoints;
 using SnipeSharp.Exceptions;
 
 namespace SnipeSharp.Common
 {
-    class RequestManagerRestSharp : IRequestManager
+    public class RequestManagerRestSharp : IRequestManager
     {
-
-        public ApiSettings _apiSettings { get; set; }
+        public ApiSettings ApiSettings { get; }
+        
+        public IQueryParameterBuilder QueryParameterBuilder { get; set; } = new QueryParameterBuilder();
+        
         private readonly RestClient _client;
 
         public RequestManagerRestSharp(ApiSettings apiSettings)
         {
-            this._apiSettings = apiSettings;
+            this.ApiSettings = apiSettings;
             this._client = new RestClient();
             this._client.AddDefaultHeader("Accept", "application/json");
         }
@@ -50,9 +53,10 @@ namespace SnipeSharp.Common
                 Resource = path,
                 Timeout = 200000
             };
-            
+
+            var filters = this.QueryParameterBuilder.GetParameters(filter);
             // TODO: We should probably breakup large requests
-            foreach (var kvp in filter.GetQueryString())
+            foreach (var kvp in filters)
             {
                 req.AddParameter(kvp.Key, kvp.Value);
             }
@@ -67,7 +71,7 @@ namespace SnipeSharp.Common
             CheckApiTokenAndUrl();
             var req = new RestRequest(Method.POST) {Resource = path};
 
-            var parameters = item.BuildQueryString();
+            var parameters = this.QueryParameterBuilder.GetParameters(item);
 
             foreach (var kvp in parameters)
             {
@@ -84,10 +88,9 @@ namespace SnipeSharp.Common
         {
             // TODO: Make one method for post and put.
             CheckApiTokenAndUrl();
-            var req = new RestRequest(Method.PUT);
-            req.Resource = path;
+            var req = new RestRequest(Method.PUT) {Resource = path};
 
-            var parameters = item.BuildQueryString();
+            var parameters = this.QueryParameterBuilder.GetParameters(item);
 
             foreach (var kvp in parameters)
             {
@@ -101,26 +104,26 @@ namespace SnipeSharp.Common
         }
 
         // Since the Token and URL can be set anytime after the SnipApi object is created we need to check for these before sending a request
-        public void CheckApiTokenAndUrl()
+        private void CheckApiTokenAndUrl()
         {
-            if (_apiSettings.BaseUrl == null)
+            if (ApiSettings.BaseUrl == null)
             {
                 throw new NullApiBaseUrlException("No API Base Url Set.");
             }
 
-            if (_apiSettings.ApiToken == null)
+            if (ApiSettings.ApiToken == null)
             {
                 throw new NullApiTokenException("No API Token Set");
             }
 
             if (_client.BaseUrl == null)
             {
-                _client.BaseUrl = _apiSettings.BaseUrl;
+                _client.BaseUrl = ApiSettings.BaseUrl;
             }
 
             if (_client.Authenticator == null)
             {
-                _client.Authenticator = new OAuth2AuthorizationRequestHeaderAuthenticator(_apiSettings.ApiToken, "Bearer");
+                _client.Authenticator = new OAuth2AuthorizationRequestHeaderAuthenticator(ApiSettings.ApiToken, "Bearer");
             }
         }
     }
