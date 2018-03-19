@@ -9,10 +9,6 @@ namespace SnipeSharp.Endpoints.Models
     // TODO: Make constructor that forces required fields
     public class Asset : CommonEndpointModel
     {
-        [JsonProperty("name")]
-        [RequestHeader("name")]
-        public new string Name { get; set; }
-
         [JsonProperty("asset_tag")]
         [RequestHeader("asset_tag")]
         public string AssetTag { get; set; }

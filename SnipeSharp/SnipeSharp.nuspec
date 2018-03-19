@@ -5,14 +5,14 @@
     <version>$version$</version>
     <title>$title$-cn</title>
     <authors>Matthew Carey, Christian Nitschkowski</authors>
-    <owners>Matthew Carey, Christian Nitschkowski</owners>
+    <owners>Christian Nitschkowski</owners>
     <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>https://github.com/cnitschkowski/SnipeSharp</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <summary>A .Net API wrapper for Snipe IT that allows you to manage the full Snipe IT API within a .NET project. </summary>
     <releaseNotes>Initial Release</releaseNotes>
-    <copyright>Copyright 2018, Matthew Carey &amp; Christian Nitschkowski</copyright>
+    <copyright>Copyright 2018, Christian Nitschkowski & Matthew Carey</copyright>
     <tags>SnipeIT Snipe IT</tags>
   </metadata>
   <files>
