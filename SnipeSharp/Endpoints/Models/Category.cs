@@ -7,6 +7,14 @@ namespace SnipeSharp.Endpoints.Models
 {
     public class Category : CommonEndpointModel
     {
+        public Category (string name)
+        {
+            // TODO: Understand what 'Name' and 'Type' mean in this context
+
+            this.Name = name;
+            this.Type = "asset";
+        }
+
         [JsonProperty("image")]
         public string Image { get; set; }
 

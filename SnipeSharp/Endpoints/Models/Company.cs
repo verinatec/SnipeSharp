@@ -5,6 +5,11 @@ namespace SnipeSharp.Endpoints.Models
 {
     public class Company : CommonEndpointModel
     {
+        public Company(string name)
+        {
+            this.Name = name;
+        }
+
         [JsonProperty("image")]
         public string Image { get; set; }
 
