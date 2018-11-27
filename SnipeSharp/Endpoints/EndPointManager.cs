@@ -98,9 +98,8 @@ namespace SnipeSharp.Endpoints
         /// <returns></returns>
         public IRequestResponse Create(T toCreate)
         {
-            System.Console.WriteLine("Currently Creating Something:");
-            System.Console.WriteLine(typeof(T));
-            System.Console.WriteLine(toCreate);
+            System.Console.WriteLine("Attempting to create type: " + typeof(T).ToString());
+            System.Console.WriteLine("Instance name: " + toCreate.Name.ToString());
 
             // Update functionality could be put in here
             SearchFilter filter = new SearchFilter(toCreate.Name);
