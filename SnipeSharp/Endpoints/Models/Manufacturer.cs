@@ -5,6 +5,11 @@ namespace SnipeSharp.Endpoints.Models
 {
     public class Manufacturer : CommonEndpointModel
     {
+        public Manufacturer(string name)
+        {
+            this.Name = name;
+        }
+
         [JsonProperty("url")]
         [RequestHeader("url")]
         public string Url { get; set; }

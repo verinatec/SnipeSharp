@@ -8,6 +8,16 @@ namespace SnipeSharp.Endpoints.SearchFilters
     /// </summary>
     public class SearchFilter : ISearchFilter
     {
+        public SearchFilter(string search)
+        {
+            this.Search = search;
+        }
+
+        public SearchFilter()
+        {
+
+        }
+
         [FilterParameterName("limit")]
         public int? Limit { get; set; }
         

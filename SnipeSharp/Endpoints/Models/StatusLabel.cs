@@ -7,6 +7,12 @@ namespace SnipeSharp.Endpoints.Models
 {
     public class StatusLabel : CommonEndpointModel
     {
+        public StatusLabel(string name)
+        {
+            this.Name = name;
+            this.Type = name;
+        }
+
         private string _type;
 
         [JsonProperty("type")]
@@ -21,7 +27,7 @@ namespace SnipeSharp.Endpoints.Models
             set
             {
                 // TODO: Move this logic somewhere else
-                string[] validTypes = {"undeployable", "deployable", "pending", "archived" };
+                string[] validTypes = {"undeployable", "deployable", "pending", "archived", "in production" };
                 if (validTypes.Contains(value.ToLower()))
                 {
                     _type = value;

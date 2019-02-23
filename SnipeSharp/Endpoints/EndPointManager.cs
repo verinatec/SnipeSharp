@@ -4,6 +4,7 @@ using SnipeSharp.Endpoints.Models;
 using SnipeSharp.Endpoints.SearchFilters;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 
 namespace SnipeSharp.Endpoints
 {
@@ -97,10 +98,22 @@ namespace SnipeSharp.Endpoints
         /// <returns></returns>
         public IRequestResponse Create(T toCreate)
         {
-            string res = ReqManager.Post(EndPoint, toCreate);
-            var response = JsonConvert.DeserializeObject<RequestResponse>(res);
+            System.Console.WriteLine("Attempting to create type: " + typeof(T).ToString());
+            System.Console.WriteLine("Instance name: " + toCreate.Name.ToString());
 
-            return response;
+            // Update functionality could be put in here
+            SearchFilter filter = new SearchFilter(toCreate.Name);
+            T existing = this.FindOne(filter);
+            if (existing != null)
+            {
+                System.Console.WriteLine("Already exists in DB", typeof(T).ToString());
+                return null;
+            } else {
+                // TODO: Make json properly here
+                string res = ReqManager.Post(EndPoint, toCreate);
+                var response = JsonConvert.DeserializeObject<RequestResponse>(res);
+                return response;
+            }
         }
 
         public IRequestResponse Update(T toUpdate)
