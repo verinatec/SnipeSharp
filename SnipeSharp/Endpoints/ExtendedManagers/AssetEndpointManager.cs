@@ -29,6 +29,7 @@ namespace SnipeSharp.Endpoints.ExtendedManagers
 
         public Asset FindBySerial(string serial)
         {
+
             string query = string.Format("{0}/byserial/{1}", this.EndPoint, serial);
             string response = this.ReqManager.Get(query);
             var result = JsonConvert.DeserializeObject<ResponseCollection<Asset>>(response);
@@ -46,3 +47,4 @@ namespace SnipeSharp.Endpoints.ExtendedManagers
         }
     }
 }
+
