@@ -26,5 +26,23 @@ namespace SnipeSharp.Endpoints.ExtendedManagers
 
             return result;
         }
+
+        public Asset FindBySerial(string serial)
+        {
+            string query = string.Format("{0}/byserial/{1}", this.EndPoint, serial);
+            string response = this.ReqManager.Get(query);
+            var result = JsonConvert.DeserializeObject<ResponseCollection<Asset>>(response);
+
+            if (result.Total == 0)
+            {
+                // No asset matching this serial found in database.
+                return null;
+            }
+            else
+            {
+                Asset dbAsset = result?.Rows?[0];
+                return dbAsset;
+            }
+        }
     }
 }
