@@ -111,8 +111,8 @@ namespace SnipeSharp.Endpoints
             } else {
                 // TODO: Make json properly here
                 string res = ReqManager.Post(EndPoint, toCreate);
-                var response = JsonConvert.DeserializeObject<RequestResponse>(res);
-                return response;
+                //var response = JsonConvert.DeserializeObject<RequestResponse>(res);
+                return null;
             }
         }
 
@@ -128,9 +128,9 @@ namespace SnipeSharp.Endpoints
         public IRequestResponse Delete(int id)
         {
             string response = ReqManager.Delete($"{EndPoint}/{id}");
-            var result = JsonConvert.DeserializeObject<RequestResponse>(response);
+            //var result = JsonConvert.DeserializeObject<RequestResponse>(response);
             
-            return result;
+            return null;
         }
 
         public IRequestResponse Delete(ICommonEndpointModel toDelete)
