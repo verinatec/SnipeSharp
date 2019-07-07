@@ -119,9 +119,10 @@ namespace SnipeSharp.Endpoints
         public IRequestResponse Update(T toUpdate)
         {
             string response = ReqManager.Put($"{EndPoint}/{toUpdate.Id}", toUpdate);
-            var result = JsonConvert.DeserializeObject<RequestResponse>(response);
-
-            return result;
+            //var result = JsonConvert.DeserializeObject<RequestResponse>(response);
+            // Currently there is an error in deserializing the response, related to the new
+            // Assignment object.
+            return null;
         }
 
         public IRequestResponse Delete(int id)

@@ -56,6 +56,7 @@
     <Compile Include="Common\RequestManagerRestSharp.cs" />
     <Compile Include="Endpoints\ExtendedManagers\SimpleEndpointManager.cs" />
     <Compile Include="Endpoints\IQueryParameterBuilder.cs" />
+    <Compile Include="Endpoints\Models\Assignment.cs" />
     <Compile Include="Endpoints\Models\CommonEndpointModel.cs" />
     <Compile Include="Common\Date.cs" />
     <Compile Include="Common\IRequestManager.cs" />

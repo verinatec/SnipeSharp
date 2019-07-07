@@ -62,7 +62,7 @@ namespace SnipeSharp.Endpoints.Models
 
         [JsonProperty("assigned_to")]
         [RequestHeader("assigned_to")]
-        public User AssignedTo { get; set; }
+        public Assignment AssignedTo { get; set; }
 
         private string _warrantyMonths;
 
