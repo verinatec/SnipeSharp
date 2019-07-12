@@ -34,7 +34,7 @@ namespace SnipeSharp.Endpoints.Models
                 } else
                 {
                     throw new InvalidStatusLabelTypeException(
-                        $"{value} Is an invalid status lable.  Use {string.Join(", ", validTypes)}");
+                        $"{value} Is an invalid status label.  Use {string.Join(", ", validTypes)}");
                 }
             }
         }
