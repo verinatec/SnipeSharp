@@ -109,10 +109,10 @@ namespace SnipeSharp.Endpoints
                 System.Console.WriteLine("Already exists in DB", typeof(T).ToString());
                 return null;
             } else {
-                // TODO: Make json properly here
+                // TODO: Properly parse and log request response.
                 string res = ReqManager.Post(EndPoint, toCreate);
-                //var response = JsonConvert.DeserializeObject<RequestResponse>(res);
                 return null;
+
             }
         }
 
